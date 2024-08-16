@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <!-- <script src="book.js"></script> -->
+</head>
+<body>
+    <form name="form1" onsubmit="submitBook()">
+        Enter Book Name:<input id="title" type="text" name="title" />
+        Enter Book Author:<input id="author" type="text" name="author" />
+        Enter Date:<input id="publish_date" type="date" name="publish_date" />
+        <!-- <input type="button" id="addBook" value="Add Book" /> -->
+        <input type="submit" id="addBook" value="Add Book" />
+    </form>
+
+    <script>
+        const submitBook = async ()=>{
+            event.preventDefault();
+
+            const url = "http://localhost:1000/books";
+            let data = {
+                title: document.getElementById("title").value,
+                author: document.getElementById("author").value,
+                publish_date:document.getElementById("publish_date").value 
+            }
+
+            // console.log(data)
+
+            await fetch(url, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+        }
+    </script>
+</body>

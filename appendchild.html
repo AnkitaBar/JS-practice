@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <ul id="myList"></ul>
+
+    <p>Click "Append" to append an item to the end of the list:</p>
+
+    <button onclick="myFunction()">Append</button>
+
+    <script>
+      function myFunction() {
+        const hy = document.createElement("h6");
+
+        const p = document.createTextNode("Water");
+
+        hy.appendChild(p);
+
+        document.getElementById("myList").appendChild(hy);
+      }
+    </script>
+  </body>
+</html>

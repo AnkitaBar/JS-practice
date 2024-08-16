@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+
+        function upper(){
+            let upper = document.form.name.value.toUpperCase();
+            document.getElementById("result").innerHTML = upper; 
+        }
+        function lower(){
+            let lower = document.form.name.value.toLowerCase();
+            document.getElementById("result").innerHTML = lower; 
+        }
+        function underline(){
+            // let underline = document.form.name.value.underlineText() ;
+            let underline = document.getElementById("name") ;
+            underline.style.textDecoration = "underline";
+            
+            document.getElementById("result").innerHTML =  underline ; 
+        }
+        function italic(){
+            let upper = document.form.name.value.style.textDecoration = "italic"; ;
+            document.getElementById("result").innerHTML = italic; 
+        }
+
+    </script>
+    <form name="form">
+        Type a string : <input type="text" name="name" id="name"><br><br>
+        <input type="button" onclick="upper()" value="upper" >
+        <input type="button" onclick="lower()" value="lower" >
+        <input type="button" onclick="underline()" value="underline" >
+        <input type="button" onclick="italic()" value="italic" ><br><br>
+        <span id="result"></span>
+    </form>
+</body>
+</html>

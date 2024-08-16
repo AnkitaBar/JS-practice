@@ -1,0 +1,80 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save and Display Products</title>
+</head>
+<body>
+    <button id="saveData">Save Data</button>
+    <button id="showData">Show Data</button>
+    <div id="productDisplay"></div>
+
+    <script>
+        document.querySelector("#saveData").addEventListener("click", () => {
+            async function saveProductData() {
+                const url = "https://dummyjson.com/products";
+                try {
+                    const response = await fetch(url);
+                    alert("Product store in local storage");
+                    const data = await response.json();
+                    saveJsonData(data.products);
+                } catch (error) {
+                    alert(`Error: ${error}`);
+                }
+            }
+
+            async function saveJsonData(productData) {
+                for (const item of productData) {
+                    let productId = item.id;
+                    let productTitle = item.title;
+                    let productDescription = item.description;
+                    let productDimensions = item.dimensions || { height: "Unknown", width: "Unknown", length: "Unknown" };
+
+                    // Mock review since the endpoint is not working
+                    let firstReview = item.reviews[0].comment;
+
+                    // Save product data along with the first review and dimensions
+                    localStorage.setItem(`product_${productId}`, JSON.stringify({
+                        id: productId,
+                        title: productTitle,
+                        description: productDescription,
+                        firstReview: firstReview,
+                        dimensions: productDimensions
+                    }));
+
+                    console.log(`Saved product ${productId} with first review and dimensions to local storage`);
+                }
+            }
+
+            saveProductData();
+        });
+
+        document.querySelector("#showData").addEventListener("click", () => {
+            const productDisplay = document.getElementById("productDisplay");
+            productDisplay.innerHTML = ""; // Clear previous content
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith("product_")) {
+                    const productData = JSON.parse(localStorage.getItem(key));
+
+                    // Create and append elements to display product data
+                    const productDiv = document.createElement("div");
+                    productDiv.innerHTML = `
+                        <h3>${productData.title}</h3>
+                        <p>${productData.description}</p>
+                        <p><strong>Dimensions:</strong> Height: ${productData.dimensions.height}, Width: ${productData.dimensions.width}</p>
+                        <p><strong>First Review:</strong> ${productData.firstReview}</p>`;
+                    productDisplay.appendChild(productDiv);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+

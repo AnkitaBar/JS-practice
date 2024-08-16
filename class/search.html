@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Books List</title>
+    <style>
+        form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Books List</h1>
+
+    <form id="bookForm">
+        <label for="name">Book Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="author">Author Name:</label>
+        <input type="text" id="author" name="author" required><br><br>
+        
+        <label for="year">Year of Publish:</label>
+        <input type="number" id="year" name="year" required><br><br>
+        
+        <button type="submit">Add Book</button>
+    </form>
+
+    <input type="text" id="searchInput" placeholder="Search by Book Name">
+    <button onclick="searchBook()">Search</button>
+    <br><br>
+
+    <table id="booksTable" border="1">
+        <thead>
+            <tr>
+                <th>Book Name</th>
+                <th>Author Name</th>
+                <th>Year of Publish</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        </tbody>
+    </table>
+
+    <script>
+        // Load books from local storage
+        let books = JSON.parse(localStorage.getItem('books')) || [];
+
+        // Function to populate the table
+        function populateTable(filteredBooks = books) {
+            const tableBody = document.getElementById('booksTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            filteredBooks.forEach(book => {
+                const row = tableBody.insertRow();
+                const cellName = row.insertCell(0);
+                const cellAuthor = row.insertCell(1);
+                const cellYear = row.insertCell(2);
+
+                cellName.innerText = book.name;
+                cellAuthor.innerText = book.author;
+                cellYear.innerText = book.year;
+            });
+        }
+
+        // Function to add a new book
+        document.getElementById('bookForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form submission
+
+            const name = document.getElementById('name').value;
+            const author = document.getElementById('author').value;
+            const year = document.getElementById('year').value;
+
+            const newBook = { name, author, year };
+            books.push(newBook);
+            localStorage.setItem('books', JSON.stringify(books));
+
+            populateTable();
+            this.reset(); // Reset the form
+        });
+
+        // Function to search for a book by name
+        function searchBook() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredBooks = books.filter(book => book.name.toLowerCase().includes(searchInput));
+            populateTable(filteredBooks);
+        }
+
+        // Populate the table on initial load
+        populateTable();
+    </script>
+</body>
+</html>
